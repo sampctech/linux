@@ -1,0 +1,15 @@
+to create a new repository on the command line
+
+echo "# sampctech" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+
+then push an existing repository from the command line
+
+git remote add origin https://github.com/sampctech/sampctech.git
+git push -u origin master
+
+
+
+git clone https://github.com/sampctech/arcomlt.git

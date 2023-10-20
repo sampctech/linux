@@ -1,0 +1,46 @@
+Let get graphical
+Check the corisponding files with those steps as I go about trying & writing them out.
+
+At this point, Arch is installed, we have a perfect base to start with, lets get visual.
+Here we are going to install the starters than will be needed in all the desktops we try.
+For the full list of "Packs" that get installed, for now see the packs doc.
+This will change over time as I try the different enviroments so that Arch has one, then graphics & so on.
+Once these steps are complete, I'm going to copy the image & move forward.
+
+Here we are going to install the following
+        sudo pacman -S xorg-server xorg-apps xorg-xinit xterm git wget bash-completion termite neofetch
+
+This will make life eaier going forward with the display drivers, & helpers to get going.
+
+So its we are ready for whats coming, its a good idea to enable the multilib repo.
+This is done by uncommenting the [multilib] section in /etc/pacman.conf
+sudo nano /etc/pacman.conf
+
+[multilib]
+Include = /etc/pacman.d/mirr
+
+Here is a good place to setup our AUR yelpers.
+I'm starting with just yay for now.
+To install yay we need to do the following:
+Clone the yay git repository
+Change the file permissions from the root the sudo user.
+Build the package using the makepkg command
+
+$ cd /opt
+$ sudo git clone https://aur.archlinux.org/yay-git.git
+$ sudo chown -R NAME:users ./yay-git
+$ cd yay-git
+$ makepkg -si
+
+Lastly we need to update yay
+$ yay -Syu
+
+To include development packages during the upgrade:
+$ yay -Syu --devel --timeupdate
+
+See Packs doc for more yay info
+
+For more info & references go to
+https://www.tecmint.com/install-yay-aur-helper-in-arch-linux-and-manjaro/
+
+Now we pick the enviroment

@@ -1,0 +1,68 @@
+1 - To have numlock @ startup
+Can be done with mkinitcpio or systemd
+To use mkinitcpio, install mkinitcpio-numlock via AUR and add the numlock mkinitcpio hook in the
+/etc/mkinitcpio.conf HOOKS array:
+
+/etc/mkinitcpio.conf
+
+...
+HOOKS=(base udev autodetect keyboard keymap consolefont numlock modconf block encrypt lvm2 filesystems fsck)
+...
+
+then, after saving, regenerate the initramfs for the change to take effect.
+
+mkinitcpio -P
+
+2 - .bashrc-personal
+  create .bashrc-personal
+  copy from github
+  
+3 - OPTIOANAL terminal tweak
+  visudo
+  uncomment options
+  If want wheel without passwd & it fails to resolve, add the following
+  Defaults:USER_NAME      !authenticate
+
+4 - remember pactree
+
+pactree will install program & dependencies
+sudo pacman -S $(pactree -l FILENAME)
+
+5 - Reminder for tar files. To extract, use -xf to extract fully. 
+tar -xf FILENAME
+
+6 - Samba
+FIRST - install with dependencies (seems to resolves alot of issues beforew they start)
+  sudo pacman -S $(pactree -l samba)
+SECOND - remember to add smb.com to /ect/samba/
+  You can copy the smb.conf file from github
+THIRD - Edit smb.conf
+  Here you can configure to suite needs. Remember to look over & setup the following:
+    1 - make sure workgroup is that same as windows, usually WORKGROUP for MSWinblows
+    2 - Create share directory(ies), MAKE SURE THEY ARE set browseable = yes
+FORTH - enable & start service
+  sudo sytstemctl start nmb
+  sudo sytstemctl start smb
+  sudo sytstemctl enable nmb
+  sudo sytstemctl enable smb
+FORTH - Setup user
+  sudo pdbedit -a -u (username)
+  
+Note: if you edit the smb.conf while it is running, you must STOP & reSTART
+
+7 - TeamViewer
+Don't instal via repo, go to Teamviewer.com & download latest tar to start
+
+Make sure to have both the latest minizip & qt both installed before proceeding
+
+sudo pacman -S minizip
+sudo pacman -S qt5
+
+now run sudo ./tv-setup install
+
+8 - Review this PACKLIST & add as needed:
+  bitwarden (AUR)
+  atom
+  meld
+  bash-completion
+  

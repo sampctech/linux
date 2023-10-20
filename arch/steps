@@ -1,0 +1,230 @@
+This is my walk through from command line to install Arch linux
+I will be installing through VirtualBox 6.1.10_Ubuntur138449
+ArchLinux-2020.12.01
+This is going to be an EUFI installation
+I have enabled VBoxSVGA with 3D Acceleration
+4G RAM
+100G virtual drive
+Simple
+
+
+List of references that help with be listed through out, starting with E.D. & ArcoLinuxD.com
+
+Once booted, chk data con
+ping -c1 google.com
+
+I'm in the US so I'm skipping changes to keyboard & language & so on.
+
+Even though the startup showed the EUFI option to start, still varifing to make sure no issues
+  efivar -l
+
+UPDATE THE SYSTEM CLOCK
+This seems to be a must, install fails if I skip this step, or even 1 part of it. Not sure if this is a VB or Arch issue.
+
+date
+timedatectl set-ntp true
+date
+
+Partition the disks
+I am starting with a 100G virtual disk. Since I have 32G of DDR4-3000 in my machine I was going to split hardware,
+but decided to make it more compatable with the system I hope to install on later.
+I use cfdisk because thats what I'm comfortable with. Use what you are comfortable with.
+You can make sure there is a dsrive & if there are any partitions there upon it with
+  lsblk
+  
+ using cfdisk I created the following
+ gpt
+ 1G   TYPE  EFI System
+ 2G   TYPE  Linux swap
+ 97G  TYPE  Linux filesystem
+ 
+write = yes (lower case)
+
+Formatting the partitions
+1st the EFI
+    mkfs.fat -F32 /dev/sda1
+
+2nd the swap partition and activating it
+    mkswap /dev/sda2
+    swapon /dev/sda2
+
+3rd the root partition.
+    mkfs.ext4 /dev/sda3
+
+Mount the file systems
+    mount /dev/sda3 /mnt
+
+    mkdir /mnt/boot
+
+    mkdir /mnt/boot/efi
+
+    mount /dev/sda1 /mnt/boot/efi
+
+With Arch12/01/20 there is not a country list for mirrow where you can select local servers so ignored Mirrors steps
+If you would like to check more recent or older installation disk
+
+    nano /etc/pacman.d/mirrorlist
+    
+Install the base and base-devel packages
+I also found that here is a great place to install some much needed extras
+I installed these 1 after another than starteds another to see if they could all be done via 1 line
+Not all of these are needed at this step, but because I am going to need them in every install I work on after this point, Itried to kill as many steps off as possible
+will remove some if there is an error
+
+base
+base-devel
+linux
+linux-firmware
+nano
+reflector
+
+the end result is 
+    pacstrap /mnt base base-devel linux linux-firmware nano reflector
+
+During install of linux-firmware, got error of missing firmware. these need to be updated after install completes:
+wd719x
+aic94xx
+xhci_pci
+
+
+FSTAB
+    genfstab -U /mnt >> /mnt/etc/fstab
+
+Check that FileSystemTABle is correct
+    nano /mnt/etc/fstab
+
+
+CHange ROOT directory:
+    arch-chroot /mnt
+
+
+TIMEZONE
+ Edit Region/City accordingly
+    ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+
+Now set hardware clock
+    hwclock --systohc
+
+to check current time
+    date
+
+
+LOCALE
+First we need to set your localization, language
+    nano /etc/locale.gen
+    locale-gen
+    nano /etc/locale.conf
+    LANG=en_US.UTF-8
+
+IF you changed the keyboard layout 
+    nano /etc/vconsole.conf
+and add this line to it and save it afterwards
+    KEYMAP=be-latin1
+
+
+Shorter alternative
+    echo LANG=en_US.UTF-8 > /etc/locale.conf
+    echo KEYMAP=be-latin1 > /etc/vconsole.conf
+
+
+HOSTNAME
+    nano /etc/hostname
+
+Write the name you have choosen for your computer.
+
+Shorter alternative
+    echo Archlinux > /etc/hostname
+
+    nano /etc/hosts
+127.0.0.1   localhost
+::1	        localhost
+127.0.0.1   Archlinux.localdomain Archlinux
+
+NETWORK CONFIGURATION
+We need to install a network manager. I chose networkmanager.
+    pacman -S networkmanager
+    systemctl enable NetworkManager
+
+
+Initramfs
+Creating a new intramfs is not required according to the wiki as result I will not create one with the command mkinitcpio -p linux.
+NOTHING TO DO HERE
+
+Root Password
+We add a password to our root account
+    passwd
+
+
+
+Boot loader
+For the boot loader I am starting with grub.
+I will try others, cause why not, but start with smething that works
+(you can add os-prober to the installation line if you multi-boot):
+    pacman -S grub efibootmgr
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi
+
+
+We still need to make the grub configuration file with this command in order to be able to boot.
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+Now if everything is correct, we need to exit & reboot
+    exit
+    umount -R /mnt
+    reboot
+
+
+
+Once reboot completes, log in as root.
+Now you can either shut the system down to make a copy of image or proceed
+I found that making a copy before tweaking is useful.
+There are a few things though that are a good idea to have going for the copy that will things a bit easier going forward.
+
+
+First we want to make sur ewe have internet connection
+    ping -c1 google.com
+
+If connection is established, we can continue, if not, back again we go to isolate
+    systemctl enable NetworkManager
+    systemctl start NetworkManager
+
+We need to update, but if we are going to use AUR, we musat edit mirrorlist first
+    nano /etc/pacman.conf
+
+Find [multilib] & remove #
+    [multilib]
+    include = /etc/pacman.d/mirrorlist
+
+Now we update with
+    pacman -Syu
+
+Now to add things that we can use, Liek an AUR helper.
+We need to create an average user. You can tweak the groups if needed.
+Lets create out very own personal account.
+To do so, we start with the following, again, this can be tweaked if needed
+Replace NAME with what you want
+    useradd -m -g users -G audio,video,network,wheel,storage,rfkill -s /bin/bash NAME
+    passwd NAME
+
+For user “NAME” to do administrative tasks requires editing the visudo file installed by the base-devel group package.
+    EDITOR=nano visudo
+
+Look for this line of code and delete the hashtag in front of it.
+    %wheel ALL=(ALL) ALL
+
+Then logout with
+    exit
+
+Now log in as NAME & chk con
+    ping...
+
+& test update
+    pacman -Syu
+    
+    shutdown now
+
+Next we get our enviroment
+
+
+
+Thanks to the groups & individuals that have provided all the info to allow this to be created & updated both up till now & going forwarded
+See Thanks.txt for full list.

@@ -1,0 +1,192 @@
+To make files executable through the various Linux based OS's:
+
+    Open the terminal.
+    Type the following command:
+        for any .bin file: sudo chmod +x filename.bin
+        for any .run file: sudo chmod +x filename.run
+        for any .sh  file: sudo chmod +x filename.sh
+    When asked for, type the required password and press Enter
+
+
+Steps to write and execute a script
+
+    Open the terminal.
+    Go to the directory where you want to create your script.
+    Create a file with .sh extension.
+    Write the script in the file using an editor.
+    Make the script executable with command
+            chmod +x <fileName>.sh
+    Run the script using ./<fileName>.sh
+
+
+This is not recommended in most cases, but has been to have the need when
+bringing a windows drive into a Linux system, if get greated by permission
+errors, this is a last case option to resolve issues with permissions, but
+all should research before going this route.
+
+However, “chmod 777” can be used to not only make a file readable, writable
+and executable by everyone, but can be done to a drive, but only for worst
+case scenario.
+
+If you do ever need to make this path your own, if the drive is not going back
+into a MS machine, backup the data, format to a Linux standard & put the files
+back.
+        EX: Open terminal
+        cd mnt
+        chmod 777 sdX#
+
+--------------------------------------------------------------
+
+
+
+How do I call function after prompt for input in a Linux shell script?
+
+The title says it all. After Im prompted, I want yes and no to respectively call a function.
+
+===================================================================
+
+# Check to see if you ran this script before
+
+echo
+echo I need to know if this is your first time...
+while true; do
+    read -p "" yn
+        case $yn in
+            [Yy]* ) new;;
+            [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+done
+
+# Define function as new
+new (){
+    clear; echo As you are new, I will need a few things.
+} 
+
+# Define function as root
+
+root(){
+    echo "$(tput setaf 6)Hello, world$(tput sgr0)"
+}
+echo
+
+===================================================================
+
+
+The title says it all. After Im prompted, I want yes and no to respectively call a function.
+----------------------------------------------------
+# Check to see if you ran this script before
+
+echo
+echo I need to know if this is your first time...
+while true; do
+    read -p "" yn
+        case $yn in
+            [Yy]* ) new;;
+            [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+done
+
+# Define function as new
+new (){
+    clear; echo As you are new, I will need a few things.
+} 
+
+# Define function as root
+
+root(){
+    echo "$(tput setaf 6)Hello, world$(tput sgr0)"
+}
+echo
+
+===================================================================
+
+If the user inputs "y" I want the script to call the function "new". As it is now, the script will try to run a program called "new" that doesn't exist. LOL. Thanks
+
+ou need to define your functions before you call them:
+
+
+# Define function as new
+new (){
+    clear; echo As you are new, I will need a few things.
+} 
+
+===================================================================
+
+# Check to see if you ran this script before
+echo
+echo I need to know if this is your first time...
+while true; do
+    read -p "" yn
+        case $yn in
+            [Yy]* ) new;;
+            [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+done
+
+
+===================================================================
+
+
+Assuming this is bash, each line in your script will be read from least to greatest. I.E. "Line 1, then line 2, then line 3, and so on. With this in mind, you can create many, many functions in a script and call them each one right after the other like so:
+
+===================================================================
+
+#!/bin/bash
+
+func_1() {
+echo "Doing something."
+}
+
+func_2() {
+echo "Doing something again."
+}
+
+func_3() {
+echo "Doing something for the last time."
+}
+
+func_1
+func_2
+func_3
+
+===================================================================
+
+However, in order to call each function, the call always has to be after the definition like so:
+
+===================================================================
+
+#!/bin/bash
+
+func_1() {
+echo "Doing something."
+}
+
+func_2() {
+echo "Doing something again."
+}
+
+func_3() {
+echo "Doing something for the last time."
+}
+
+until [ "$SOMETHING" == "SOMETHING_1" ]
+do
+func_1
+done
+
+until [ "$SOMETHING_2" == "SOMETHING_3" ]
+do
+func_2
+done
+
+until [ "$SOMETHING_4" == "SOMETHING_5" ]
+do
+func_3
+done
+
+===================================================================
+
+This will help to better utilize functions in your more complex scripts. Hope this helped.

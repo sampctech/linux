@@ -1,0 +1,289 @@
+How do I call function after prompt for input in a Linux shell script?
+
+The title says it all. After Im prompted, I want yes and no to respectively call a function.
+
+===================================================================
+
+# Check to see if you ran this script before
+
+echo
+echo Do you want to update mirrorlist?
+while true; do
+    read -p "" yn
+        case $yn in
+            [Yy]* ) new;;
+            [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+done
+
+# Define function as new
+new (){
+    clear; echo As you are new, I will need a few things.
+}
+
+# Define function as root
+
+root(){
+    echo "$(tput setaf 6)Hello, world$(tput sgr0)"
+}
+echo
+
+===================================================================
+
+
+The title says it all. After Im prompted, I want yes and no to respectively call a function.
+----------------------------------------------------
+# Check to see if you ran this script before
+
+echo
+echo I need to know if this is your first time...
+while true; do
+    read -p "" yn
+        case $yn in
+            [Yy]* ) new;;
+            [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+done
+
+# Define function as new
+new (){
+    clear; echo As you are new, I will need a few things.
+}
+
+# Define function as root
+
+root(){
+    echo "$(tput setaf 6)Hello, world$(tput sgr0)"
+}
+echo
+
+===================================================================
+
+If the user inputs "y" I want the script to call the function "new". As it is now, the script will try to run a program called "new" that doesn't exist. LOL. Thanks
+
+ou need to define your functions before you call them:
+
+
+# Define function as new
+new (){
+    clear; echo As you are new, I will need a few things.
+}
+
+===================================================================
+
+# Check to see if you ran this script before
+echo
+echo I need to know if this is your first time...
+while true; do
+    read -p "" yn
+        case $yn in
+            [Yy]* ) new;;
+            [Nn]* ) exit;;
+                * ) echo "Please answer yes or no.";;
+            esac
+done
+
+
+===================================================================
+
+
+Assuming this is bash, each line in your script will be read from least to greatest. I.E. "Line 1, then line 2, then line 3, and so on. With this in mind, you can create many, many functions in a script and call them each one right after the other like so:
+
+===================================================================
+
+#!/bin/bash
+
+func_1() {
+echo "Doing something."
+}
+
+func_2() {
+echo "Doing something again."
+}
+
+func_3() {
+echo "Doing something for the last time."
+}
+
+func_1
+func_2
+func_3
+
+===================================================================
+
+However, in order to call each function, the call always has to be after the definition like so:
+
+===================================================================
+
+#!/bin/bash
+
+func_1() {
+echo "Doing something."
+}
+
+func_2() {
+echo "Doing something again."
+}
+
+func_3() {
+echo "Doing something for the last time."
+}
+
+until [ "$SOMETHING" == "SOMETHING_1" ]
+do
+func_1
+done
+
+until [ "$SOMETHING_2" == "SOMETHING_3" ]
+do
+func_2
+done
+
+until [ "$SOMETHING_4" == "SOMETHING_5" ]
+do
+func_3
+done
+
+===================================================================
+
+This will help to better utilize functions in your more complex scripts. Hope this helped.
+
+
+
+https://www.howtogeek.com/415535/how-to-use-the-yes-command-on-linux/
+Using yes With Scripts
+
+#!/bin/bash
+
+# ...
+# in the middle of some long script
+# obtain a response from the user
+# ...
+
+echo "Are you happy to proceed? [y,n]"
+read input
+
+# did we get an input value?
+if [ "$input" == "" ]; then
+
+   echo "Nothing was entered by the user"
+
+# was it a y or a yes?
+elif [[ "$input" == "y" ]] || [[ "$input" == "yes" ]]; then
+
+   echo "Positive response: $input"
+
+# treat anything else as a negative response
+else
+
+   echo "negative response: $input"
+
+fi
+-----------------------------------------------------------------
+#!/bin/bash
+
+# ...
+# in the middle of some long script
+# obtain a response from the user
+# ...
+
+echo "Are you happy to proceed? [y,n]"
+read input
+
+# was it a y or a yes?
+if [[ "$input" == "y" ]] || [[ "$input" == "yes" ]]; then
+
+   echo "yes"
+
+# was it a n or a no?
+elif [[ "$input" == "n" ]] || [[ "$input" == "no" ]]; then
+
+    echo "OK"
+
+# treat anything else as a invalid response
+else
+
+   echo "Incorrect input entered by the user"
+   exit
+fi
+
+
+
+--------------------------------------------------------------------------------------------
+
+greeting="Welcome"
+user=$(whoami)
+day=$(date +%A)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+echo "$greeting back $user! Today is $day, which is the best day of the entire week!"
+echo "Your Bash shell version is: $BASH_VERSION. Enjoy!"
+
+# The function total_files reports a total number of files for a given directory.
+function total_files {
+        find $1 -type f | wc -l
+}
+
+# The function total_directories reports a total number of directories
+# for a given directory.
+function total_directories {
+        find $1 -type d | wc -l
+}
+
+tar -czf $output $input 2> /dev/null
+
+echo -n "Files to be included:"
+total_files $input
+echo -n "Directories to be included:"
+total_directories $input
+
+echo "Backup of $input completed!"
+
+echo "Details about the output backup file:"
+ls -l $output
+
+#!/bin/bash
+
+user=$(whoami)
+input=/home/$user
+output=/tmp/${user}_home_$(date +%Y-%m-%d_%H%M%S).tar.gz
+
+function total_files {
+        find $1 -type f | wc -l
+}
+
+function total_directories {
+        find $1 -type d | wc -l
+}
+
+function total_archived_directories {
+        tar -tzf $1 | grep  /$ | wc -l
+}
+
+function total_archived_files {
+        tar -tzf $1 | grep -v /$ | wc -l
+}
+
+tar -czf $output $input 2> /dev/null
+
+src_files=$( total_files $input )
+src_directories=$( total_directories $input )
+
+arch_files=$( total_archived_files $output )
+arch_directories=$( total_archived_directories $output )
+
+echo "Files to be included: $src_files"
+echo "Directories to be included: $src_directories"
+echo "Files archived: $arch_files"
+echo "Directories archived: $arch_directories"
+
+if [ $src_files -eq $arch_files ]; then
+        echo "Backup of $input completed!"
+        echo "Details about the output backup file:"
+        ls -l $output
+else
+        echo "Backup of $input failed!"
+fi

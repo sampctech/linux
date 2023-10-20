@@ -1,0 +1,49 @@
+#.bashrc_personal
+# add your own shortcuts
+
+#ignore upper and lowercase when TAB completion
+bind 'set completion-ignore-case on'
+
+#Refresh .bashrc after bash updates
+alias rbp='. ~/.bashrc_personal'
+alias rlbd='sudo exec bash'
+alias rlbc='sudo exec $BASH'
+alias rlb='sudo .~/.bashrc'
+alias rlbp='sudo .~/.bashrc_personal'
+
+#alias rlb='sudo source ~/.bashrc'
+#alias rlbp=''sudo source ~/.bashrc-personal'
+
+#fix obvious typo's
+alias intal='sudo pacman -S'
+alias insal='sudo pacman -S'
+alias instal='sudo pacman -S'
+alias uintal='sudo pacman -S'
+alias uinsal='sudo pacman -S'
+alias uinstal='sudo pacman -S'
+
+# Aliases for software managment
+# pacman or pm
+alias update='sudo pacman -Syyu --noconfirm --needed'
+alias upd='update'
+alias updu='mUSA && update'
+alias updg='mUSA && yup'
+alias install='sudo pacman -S --noconfirm'
+alias uninstall='sudo pacman -R --noconfirm'
+
+#add yay aur helper
+alias addyay='git clone https://aur.archlinux.org/yay.git && curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yay.tar.gz && cd yay && makepkg -si'
+
+# yay as aur helper - updates everything
+alias yup='yay -S --noconfirm'
+
+#get fastest mirrors in your neighborhood
+alias mUSA='sudo reflector -c US -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist'
+
+#nano for important configuration files
+#know what you do in these files
+alias nano='sudo nano'
+alias evsudo='sudo EDITOR=nano visudo'
+
+#shutdown or reboot
+alias ssd='sudo shutdown now'

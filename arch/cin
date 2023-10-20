@@ -1,0 +1,63 @@
+Cinnamon
+
+Personally I'm a fan of Cinnamon so I'm gonna tackle that first.
+As I proceed, I will add others as I try them.
+Check the corisponding files with those steps as I go about trying & writing them out.
+
+Below will be what I've chosen for Cinnamon.
+This will get updated over time as I find what I'm going to setup & install as well as tweak.
+
+For login manager, I'm going with lightdm
+I may try others, but I'm new. This has the most documentation on how to setup & tweak from what I've found.
+
+To install :
+    sudo pacman -S lightdm
+    sudo pacman -S lightdm-gtk-greeter lightdm-gtk-greeter-settings
+    sudo systemctl enable lightdm.service
+
+Now for Cinnamon
+    sudo pacman -S cinnamon
+
+This is vanilla. We are going to tweak & make are own.
+I really like different fonts & have used some different Terminal emulators.
+As I find options I really, I will be updating this doc starting with the following:
+(See below)
+
+
+From installing ArcoLinux, I have found that customizing can be very easy with scripts, but I want to do this the hard way at first so no scripts yet.
+My plan is to create scripts from what I've learned & make all this a very easy, 1 click type solution, but with full control by the user
+
+Sometimes pipe dreams come true
+
+virtualbox image errors :
+missing firmware wd719x, aic94xx, xhci_pci
+
+
+
+Application 	    Cinnamon
+
+pacman
+Browser             firefox brave
+Document Viewer 	xreader
+Calculator          calc
+Text Editor         xed
+Terminal            termite
+
+yay
+image viewer 	    xviewer
+media player 	    xplayer
+image organizer 	pix
+
+mint-themes AUR
+mint-x-icons AUR
+mint-y-icons AUR
+mint-backgrounds AUR
+
+
+REBOOT
+
+
+Themes
+Cinnamox Rhino
+Numix-Cinnamon-Transparent
+

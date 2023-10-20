@@ -1,0 +1,76 @@
+HELPERS
+
+To refresh bash so you don not have to relaunch the terminal over & over when editing some files,
+    source ~/.bashrc
+
+I found that the bash-personal file that comes with ArcoLinux is very nice.
+I am finding it to be but can be hard to memorize & a good bit of the shortcuts I have not found usefull yet.
+Because of this, so I'm creating my own.
+Once I figured out how to create my own aliases file, I added a reference to the .bashrc file.
+I listed those steps below so you can modify mine or create your own as well.
+
+# Alias definitions.
+# It's a good idea to put all your additions into a separate file like aliases or personal
+# instead of adding them directly to the .bashrc file. This will keep from loosing them
+# after an update that could rewrite the .bashrc file itself
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+# Uncomment the following to reference
+# for aliases
+# [[ -f ~/.bashrc_aliases ]] && . ~/.bashrc_aliases
+# for personal
+# [[ -f ~/.bashrc-personal ]] && . ~/.bashrc-personal
+
+# To reload .bashrc & persoinal aliases file
+#alias rbp='. ~/.bash_aliases'
+#alias rbp='. ~/.bashrc-personal'
+
+# Backup your .bashrc & persoinal aliases files
+alias bkupbrc="sudo cp ~/.bashrc ~/.bashrc.bak"
+#alias bkupbp="sudo cp ~/.bash_aliases ~/.bash_aliases.bak
+#alias bkupbp="sudo cp ~/.bashrc-personal ~/.bashrc-personal.bak
+#alias bubp="sudo cp ~/.bashrc ~/.bashrc.bak && cp ~/.bash_aliases ~/.bash_aliases.bak
+#alias bubp="sudo cp ~/.bashrc ~/.bashrc.bak && cp ~/.bashrc-personal ~/.bashrc-personal.bak
+
+###############################################################################################
+
+Get info about changing prompt colors
+https://www.cyberciti.biz/faq/bash-shell-change-the-color-of-my-shell-prompt-under-linux-or-unix/
+
+https://phoenixnap.com/kb/change-bash-prompt-linux
+
+Back up bash
+
+Make permanent changes to bash prompt
+sudo EDITOR ~/.bashrc
+
+How to Change BASH Prompt Color
+
+\e[0;32m[\u@\h \W]\$\e[0m
+
+Here’s a breakdown of the commands:
+
+• \e[ – Begin color changes
+• 0;32m – Specify the color code
+• [\u@\h \W]\$ – This is the code for your normal BASH prompt (username@hostname Workingdirectory $)
+• \e[0m – Exit color-change mod
+
+The first number in the color code specifies the typeface:
+
+• 0 – Normal
+• 1 – Bold (bright)
+• 2 – Dim
+• 4 – Underlined
+
+The second number indicates the color you want:
+
+• 30 – Black
+• 31 – Red
+• 32 – Green
+• 33 – Brown
+• 34 – Blue
+• 35 – Purple
+• 36 – Cyan
+• 37 – Light gray
+
+Additionally, if you combine the bright option with a color code, you get a lighter version of that color. For example, if you use color code 1;32, you would get light green instead of the normal green. If you use 1;33, you get yellow instead of brown.

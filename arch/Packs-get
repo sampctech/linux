@@ -1,0 +1,15 @@
+List of usefull tools & how to get them
+
+CDemu Virtual CD/DVD emulator
+
+yay gcdemu
+
+to resolve missing xhci_pci firmware
+$ lsmod | grep xhci_pci
+xhci_pci               20480  0
+xhci_pci_renesas       20480  1 xhci_pci
+xhci_hcd              286720  1 xhci_pci
+
+lspci | grep -i renesas
+if renesas:
+yay -S upd72020x-fw

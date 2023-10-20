@@ -1,0 +1,130 @@
+This is my walk through from command line to install Arch linux
+I will be installing on hardware
+ArchLinux-2021.03.01
+This is going to be an EUFI installation
+32G RAM
+465G Nvme drive
+Nvidia GTX1080
+ethernet*
+
+List of references that help with be listed through out, starting with E.D. & ArcoLinuxD.com
+I have illiminated most of the Dialog for quicker referencing. I'm in the US so I'm skipping
+changes to keyboard & language & so on.
+
+ping -c1 google.com
+
+efivar -l
+
+date
+timedatectl set-ntp true
+date
+
+lsblk
+
+Partition the disks using cfdisk I created the following
+  gpt
+  750M    TYPE  EFI System
+   16G    TYPE  Linux swap
+  200G    TYPE  Linux filesystem
+ 
+Formatting the partitions
+
+    mkfs.fat -F32 /dev/sda1
+    mkfs.ext4 /dev/sda3
+    
+    mkswap /dev/sda2
+    swapon /dev/sda2
+
+Mount the file systems
+    mount /dev/sda3 /mnt
+    mkdir /mnt/boot
+    mkdir /mnt/boot/efi
+    mount /dev/sda1 /mnt/boot/efi
+
+Install the my Arch base packages
+    pacstrap /mnt base base-devel linux linux-firmware nano reflector networkmanager grub efibootmgr
+
+FSTAB
+    genfstab -U /mnt >> /mnt/etc/fstab
+
+Check that FileSystemTABle is correct
+    nano /mnt/etc/fstab
+
+CHange ROOT directory:
+    arch-chroot /mnt
+
+
+TIMEZONE /hardware clock
+    ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+    hwclock --systohc
+    date
+
+
+LOCALE & HOSTNAME
+    nano /etc/locale.gen
+    locale-gen
+    echo LANG=en_US.UTF-8 > /etc/locale.conf
+    echo Archlinux > /etc/hostname
+
+    nano /etc/hosts
+127.0.0.1   localhost
+::1	        localhost
+127.0.0.1   Archlinux.localdomain Archlinux
+
+Setup networking, root password & grub
+
+  systemctl enable NetworkManager
+  passwd
+  grub-install --target=x86_64-efi --efi-directory=/boot/efi
+  grub-mkconfig -o /boot/grub/grub.cfg
+
+STEP 1 complete
+    exit
+    umount -R /mnt
+    reboot
+
+STEP 2
+log in as root.
+
+  nano /etc/pacman.conf
+
+Find [multilib] & remove #
+    [multilib]
+    include = /etc/pacman.d/mirrorlist
+
+Now we update with
+    pacman -Syu
+
+Lets create out very own personal account.
+Replace NAME with what you want
+    useradd -m -g users -G audio,video,network,wheel,storage,rfkill -s /bin/bash NAME
+    passwd NAME
+
+    EDITOR=nano visudo
+
+Look for this line of code and delete the hashtag in front of it.
+    %wheel ALL=(ALL) ALL
+
+Then logout with
+    exit
+
+Login as name
+Next we get our enviroment
+
+sudo pacman -S xorg nvidia
+sudo pacman -S --noconfirm cinnamon termite git wget neofetch bash-completion firefox atom oxygen-icons lightdm lightdm-gtk-greeter lightdm-gtk-greeter-setting
+
+reboot
+
+once logged in,
+add yay
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+
+correct missing missing firmware.
+these need to be updated after install completes:
+through yay 
+wd719x-firware
+aic94xx-firmware
+xhci_pci (NA @ this time

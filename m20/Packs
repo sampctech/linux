@@ -1,0 +1,35 @@
+List of packages installed
+Cinnamon
+samba
+xed
+
+
+
+
+Themes
+Cinnamox Rhino
+Numix-Cinnamon-Transparent
+
+
+
+
+
+Media Players
+https://en.wikipedia.org/wiki/Comparison_of_free_software_for_audio#Players
+
+QMMP
+sudo apt-get install qmmp
+
+Quod Libet
+https://quodlibet.readthedocs.io/en/latest/index.html
+
+sudo add-apt-repository ppa:lazka/ppa
+sudo apt-get update
+sudo apt-get install quodlibet
+
+
+
+CDemu Virtual CD/DVD
+sudo apt add-repository ppa:cdemu/ppa
+sudo apt-get update
+sudo apt-get install gcdemu cdemu-client

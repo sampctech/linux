@@ -1,0 +1,66 @@
+Arch packages & dependencies
+
+pacstrap /mnt base base-devel linux linux-firmware nano
+
+pacman -S networkmanager reflector grub efibootmgr
+
+pacman-contrib
+
+To install app & all optional dependencies:
+pacman -S $(pactree -l APPNAME)
+
+--------------------------------------------------------------------------
+pacman
+bash-completion xorg git wget neofetch termite
+nvidia nvidia-settings opencl-nvidia
+
+lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+cinnamon oxygen-icons atom firefox deluge deluge-gtk gparted grub-customizer jack ntfs-3g variety
+
+hwinfo
+lmms
+vlc
+
+wine-staging wine-gecko wine-mono winetricks
+
+yay
+brave-bin bitwarden-bin teamviewer sublime-text
+
+
+Lutris
+DRIVERS:
+NVIDIA: nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader
+
+AMD: lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader
+
+Intel: lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader
+
+Wine
+sudo pacman -S wine-staging
+
+
+Combined MANDATORY dependencies:
+
+ gamemode lib32-gamemode giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader lib32-gnutls lib32-libldap lib32-libgpg-error lib32-libxml2 lib32-alsa-plugins lib32-sdl2 lib32-freetype2 lib32-dbus lib32-libgcrypt libgcrypt lib32-gnutls lib32-libldap lib32-libgpg-error lib32-sqlite lib32-libpulse
+
+Origin Support:
+https://github.com/lutris/docs/blob/master/Origin.md
+
+Battle.Net:
+https://github.com/lutris/docs/blob/master/Battle.Net.md
+
+DXVK:
+https://github.com/lutris/docs/blob/master/HowToDXVK.md
+
+Esync:
+https://github.com/lutris/docs/blob/master/HowToEsync.md
+
+
+BIOS files for RetroArch:
+https://github.com/lutris/docs/blob/master/RetroArch.md
+~/.config/retroarch/system
+
+Alt Wine Builds
+Glorious Eggroll: https://github.com/GloriousEggroll
+
+Tk-Glitch: https://github.com/Tk-Glitch

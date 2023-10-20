@@ -1,0 +1,69 @@
+#.bashrc_personal
+#.personal setting & aliases
+# add your own shortcuts
+
+#ignore upper and lowercase when TAB completion
+bind 'set completion-ignore-case on'
+
+alias lsa='ls -la --color=auto'
+PS1='[\u@\h \W]\$
+
+#Refresh .bashrc after bash updates
+alias rlb='.~/.bashrc'
+alias rbp='. ~/.bashrc_personal'
+
+#get fastest mirrors in your neighborhood
+alias mUSA='sudo reflector -c US -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist'
+
+alias setupbase='chmod +777 setupbase && ./setupbase'
+
+#add yay aur helper
+alias addyay='git clone https://aur.archlinux.org/yay.git && curl -L -O https://aur.archlinux.org/cgit/aur.git/snapshot/yay.tar.gz && cd yay && makepkg -si'
+
+# Aliases for software managment
+# pacman or pm
+alias rb='bash'
+alias install='sudo pacman -S --noconfirm --needed'
+alias uninstall='sudo pacman -R --noconfirm --needed'
+alias update='sudo pacman -Syyu --noconfirm --needed'
+alias upd='update'
+alias updu='mUSA && update'
+alias updg='mUSA && yup'
+alias yup='yay -S --noconfirm'
+
+#nano for important configuration files
+#know what you do in these files
+alias nano='sudo nano'
+alias evsudo='sudo EDITOR=nano visudo'
+
+#fix obvious typo's
+alias intal='install'
+alias insal='install'
+alias instal='install'
+alias uintal='uninstall'
+alias uinsal='uninstall'
+alias uinstal='uninstall'
+
+#hardware info
+alias hw="hwinfo"
+alias hwdn="hwinfo --debug N"
+alias hwh="hwinfo --help"
+alias hwlf="hwinfo --log FILE"
+alias hwm="hwinfo --map"
+alias hwmv="hwinfo --map --verbose"
+alias hwo="hwinfo --only DEVNAME"
+alias hwr="hwinfo --listmd"
+alias hws="hwinfo --short"
+alias hwsu="hwinfo --show-config UDI"
+alias hwv="hwinfo --version"
+
+#other
+alias ch7='sudo chmod +777'
+alias chm='sudo chmod'
+alias detar='sudo tar -xzvf'
+alias cretar='sudo tar -czvf'
+
+#shutdown or reboot
+alias sds='shutdown now'
+alias sdn='sudo shutdown now --noconfirm --needed'
+alias sr='reboot'

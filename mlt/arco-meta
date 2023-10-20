@@ -1,0 +1,3 @@
+sudo pacman -S arcolinux-meta-fun
+sudo pacman -S arcolinux-meta-steam
+sudo pacman -S arcolinux-meta-utilities
